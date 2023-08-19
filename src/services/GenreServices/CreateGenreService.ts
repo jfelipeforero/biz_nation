@@ -1,27 +1,34 @@
 import Genre from "../../models/Genre";
+import * as Yup from 'yup'
 
 interface Request {
   name: string;
-  image: string;
-  movieshow: string;
+  image: string; 
 }
 
-const CreateGenreService = async({
+const CreateService = async({
   name,
-  image,
-  movieshow,
+  image, 
 }: Request): Promise<Genre> => {
-  //const exists = await Genre.findOne()
-  //if(exists) {
-   // console.log("it already exists")
-  //} 
-
-  const genre = Genre.create({
-    name,
-    image,
-    movieshow
+  const schema = Yup.object().shape({
+    name: Yup.string().required().min(2),
+    image: Yup.string().required().min(2), 
   })
+
+  try {
+    await schema.validate({ name, image })
+  } catch(err) {
+    throw new Error(`Error validating schema: ${err}`)
+  }
+
+  const genre = await Genre.create(
+    { 
+      name,
+      image, 
+    }, 
+  );
+
   return genre
 }
 
-export default CreateGenreService;
+export default CreateService

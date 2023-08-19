@@ -12,7 +12,7 @@ interface CharacterData {
 }
 
 interface Request {
-  characterId: string
+  characterId: number | string;
   characterData: CharacterData;
 }
 
@@ -21,27 +21,14 @@ const UpdateService = async({
   characterData
 }: Request): Promise<Character> => {
   const character = await GetByIdService(characterId)
+  console.log(character)
 
   const schema = Yup.object().shape({
-    image: Yup.string().required().min(2), 
-    name: Yup.string() 
-    .required()
-    .min(2)
-    .trim()
-    .test(
-      "Check-name",
-      "A character with the same name already exists.",
-      async value => {
-        if (!value) return false;
-        const nameExists = await Character.findOne({
-          where: { name: value }
-        });
-        return !nameExists;
-      }
-    ),
-    age: Yup.number().required().integer().required().min(1),
-    weight: Yup.number().required(), 
-    history: Yup.string().required().min(10),
+    image: Yup.string().min(2), 
+    name: Yup.string().min(2),
+    age: Yup.number().integer().min(1),
+    weight: Yup.number() ,
+    history: Yup.string().min(10),
     
   })
 

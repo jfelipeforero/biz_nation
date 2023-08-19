@@ -1,10 +1,10 @@
-import Character from "../../models/Character";
-import * as Yup from 'yup'
 import MovieShow from "../../models/MovieShow";
+import * as Yup from 'yup'
 
 interface Request {
   image: string;
   title: string;
+  genreId: number;
   releaseDate: string;
   rating: string;
   charactersIds?: number[]; 
@@ -13,6 +13,7 @@ interface Request {
 const CreateService = async({
   image,
   title,
+  genreId,
   releaseDate,
   rating, 
   charactersIds = []
@@ -20,12 +21,13 @@ const CreateService = async({
   const schema = Yup.object().shape({
     image: Yup.string().required().min(2), 
     title: Yup.string().required().min(2),
-    releaseDate: Yup.date(),
-    rating: Yup.number(), 
+    genreId: Yup.number(),
+    releaseDate: Yup.date().required(),
+    rating: Yup.number().required().positive().max(5), 
   })
 
   try {
-    await schema.validate({ image, title, releaseDate, rating })
+    await schema.validate({ image, title, genreId, releaseDate, rating })
   } catch(err) {
     throw new Error(`Error validating schema: ${err}`)
   }
@@ -34,6 +36,7 @@ const CreateService = async({
     { 
       image,
       title,
+      genreId,
       releaseDate,
       rating,
     },

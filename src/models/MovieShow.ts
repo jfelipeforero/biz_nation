@@ -1,9 +1,9 @@
-import {Model, Column, Table, BelongsToMany, Scopes, CreatedAt, UpdatedAt, PrimaryKey, AutoIncrement, BelongsTo, ForeignKey} from "sequelize-typescript";
+import {Model, Column, Table, BelongsToMany, PrimaryKey, AutoIncrement, BelongsTo, ForeignKey, DeletedAt} from "sequelize-typescript";
 import Character from "./Character";
 import CharacterMovieShow from "./CharacterMovieShow";
 import Genre from "./Genre";
 
-@Table
+@Table({ timestamps: true, paranoid: true })
 class MovieShow extends Model {
   @PrimaryKey
   @AutoIncrement
@@ -32,6 +32,8 @@ class MovieShow extends Model {
   @BelongsTo(() => Genre)
   genre!: Genre;
 
+  @DeletedAt
+  deletedAt?: Date;
 }
 
 export default MovieShow

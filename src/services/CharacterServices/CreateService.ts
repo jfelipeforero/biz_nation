@@ -31,7 +31,7 @@ const CreateService = async({
         if (!value) return false;
         const nameExists = await Character.findOne({
           where: { name: value }
-        });
+        }); 
         return !nameExists;
       }
     ),

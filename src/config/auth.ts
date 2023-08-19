@@ -2,8 +2,8 @@ require('dotenv').config();
 
 export default {
   secret: process.env.JWT_SECRET || "mysecret",
-  expiresIn: "20m",
+  expiresIn: process.env.EXPIRE_TIME || "20m",
   refreshSecret: process.env.JWT_REFRESH_SECRET,
-  refreshExpiresIn: "5d"
+  refreshExpiresIn: process.env.REFRESH_EXPIRE_TIME || "5d"
 };
 

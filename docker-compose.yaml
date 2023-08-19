@@ -1,4 +1,15 @@
 services:
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: . 
+      target: development
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - mysql
   mysql:
     image: mysql:latest
     restart: always

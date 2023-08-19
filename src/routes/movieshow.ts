@@ -4,9 +4,11 @@ import * as MovieShowController from '../controllers/MovieShowController'
 const router = express.Router()
 
 router.post('/create', MovieShowController.createMovieShow)
-router.get('/show', MovieShowController.getMovieShowById)
-router.get('/movies', MovieShowController.getAllMovieShow)
+router.get('/query', MovieShowController.getByQueryMovieShow)
+router.get('/', MovieShowController.getAllMovieShow)
+router.get('', MovieShowController.getAllMovieShow)
+router.get('/movies/:id', MovieShowController.getMovieShowById)
 router.put('/update', MovieShowController.updateMovieShow)
-router.delete('/delete', MovieShowController.deleteMovieShow)
+router.delete('/delete/:id', MovieShowController.deleteMovieShow)
 
 export { router as movieshowRouter }

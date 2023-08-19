@@ -6,23 +6,7 @@ export const createAccessToken = (user: User): string => {
   const { secret, expiresIn } = authConfig;
 
   return sign(
-    { id: user.id, username: user.username },
-    secret,
-    {
-      expiresIn
-    }
+    { username: user.username, id: user.id }, secret, { expiresIn }
   );
 };
-
-//export const createRefreshToken = (user: User): string => {
-  //const { refreshSecret, refreshExpiresIn } = authConfig;
-
- // return sign({ id: user.id, tokenVersion: user.tokenVersion }, refreshSecret, {
-  //  expiresIn: refreshExpiresIn
- // });
-//};
-
-
-
-
 

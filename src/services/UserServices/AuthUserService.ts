@@ -1,7 +1,7 @@
-import { createAccessToken } from "../../helpers/CreateTokens";
-import { SerializeUser } from "../../helpers/SerializeUser";
 import User from "../../models/User";
-import * as Yup from 'yup'
+import { createAccessToken } from "../../helpers/CreateTokens"
+import { SerializeUser } from "../../helpers/SerializeUser";
+import AppError from "../../errors/AppError";
 
 interface SerializedUser {
   id: number;
@@ -16,52 +16,33 @@ interface Request {
 
 interface Response {
   serializedUser: SerializedUser;
-  token: string;
-  //refreshToken: string;
+  token: string; 
 }
 
 const AuthUserService = async ({
   email,
   password
-}:Request): Promise<Response> => {
-  const schema = Yup.object().shape({
-    username: Yup.string().required().min(3),
-    email: Yup.string()
-      .email()
-      .required()
-      .test(
-        "Check-email",
-        "An user with this email already exists.",
-        async value => {
-          if (!value) return false;
-          const emailExists = await User.findOne({
-            where: { email: value }
-          });
-          return !emailExists;
-        }
-      ),
-      password: Yup.string().required().min(6)
-  })
+}: Request): Promise<Response> => {
+  const user = await User.findOne({
+    where: { email }, 
+  });
 
-  try {
-    await schema.validate({ email, username, password })
-  } catch(err) {
-    throw new Error
+  if (!user) {
+    throw new AppError("ERR_INVALID_CREDENTIALS", 401);
   }
 
   if (!(await user.checkPassword(password))) {
-    throw new Error("adfa")
+    throw new AppError("ERR_INVALID_CREDENTIALS", 401);
   }
 
-  const token = createAccessToken(user)
-  //const refreshToken = createRefreshToken(user)
+  const token = createAccessToken(user); 
 
-  const serializedUser = SerializeUser(user)
-  
+  const serializedUser = SerializeUser(user);
+
   return {
     serializedUser,
     token, 
-  }
-}
+  };
+};
 
-export default AuthUserService
+export default AuthUserService;

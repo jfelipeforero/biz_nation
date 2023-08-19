@@ -1,13 +1,15 @@
 import MovieShow from "../../models/MovieShow";
 import Character from "../../models/Character";
+import Genre from "../../models/Genre";
 
-const GetByQueryService = async (queryParam: string ): Promise<MovieShow[]> => {
+const GetByQueryService = async (field:string, queryParam: string): Promise<MovieShow[]> => {
   const movieshow = await MovieShow.findAll({
     where: {
-      queryParam 
+      [field]: queryParam,
     },
     include: [
       { model: Character, as: "characters", attributes: [ "name" ] }, 
+      { model: Genre, as: "genre", attributes: [ "name" ]}
     ],
   });
   if (!movieshow) {

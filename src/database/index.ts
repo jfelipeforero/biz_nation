@@ -5,8 +5,9 @@ import Character from '../models/Character';
 import MovieShow from '../models/MovieShow';
 import CharacterMovieShow from '../models/CharacterMovieShow';
 
-//const dbConfig = require("../config/database")
+const dbConfig = require("../config/database")
 
+// This should be stored in an .env file
 const sequelize = new Sequelize({
   database: 'disneyapi',
   dialect: 'mysql', 
@@ -16,6 +17,7 @@ const sequelize = new Sequelize({
 })
 
 const models = [
+  User,
   Character,
   MovieShow,
   CharacterMovieShow,

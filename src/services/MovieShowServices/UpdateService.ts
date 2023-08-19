@@ -5,6 +5,7 @@ import GetByIdService from './GetByIdService';
 interface MovieShowData {
   image?: string;
   title?: string;
+  genreId?: number;
   releaseDate?: string;
   rating?: string; 
   charactersIds?: number[];
@@ -24,14 +25,15 @@ const UpdateService = async({
  const schema = Yup.object().shape({
     image: Yup.string().required().min(2), 
     title: Yup.string().required().min(2),
+    genreId: Yup.number(),
     releaseDate: Yup.date(),
-    rating: Yup.number(), 
+    rating: Yup.number().max(5), 
   })
 
-  const { image, title, releaseDate, rating, charactersIds = [] } = movieshowData;
+  const { image, title, genreId, releaseDate, rating, charactersIds = [] } = movieshowData;
 
   try {
-    await schema.validate({ image, title, releaseDate, rating })
+    await schema.validate({ image, title, genreId, releaseDate, rating })
   } catch(err) {
     throw new Error(`Error validating schema: ${err}`)
   }
@@ -40,6 +42,7 @@ const UpdateService = async({
     { 
       image,
       title,
+      genreId,
       releaseDate,
       rating,   
     }
