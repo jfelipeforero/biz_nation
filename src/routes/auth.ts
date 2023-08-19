@@ -1,8 +1,8 @@
 import express from 'express'
-import * as AuthController from '../controllers/AuthController'
+import * as UserController from '../controllers/UserController'
 
 const router = express.Router()
 
-router.post('/register', AuthController.register)
+router.post('/register', UserController.register)
 
 export { router as authController }

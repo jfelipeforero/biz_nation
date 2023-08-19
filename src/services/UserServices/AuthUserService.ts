@@ -1,6 +1,12 @@
-import { createAccessToken, createRefreshToken } from "../../helpers/CreateTokens";
+import { createAccessToken } from "../../helpers/CreateTokens";
 import { SerializeUser } from "../../helpers/SerializeUser";
 import User from "../../models/User";
+
+interface SerializedUser {
+  id: number;
+  name: string;
+  email: string;
+}
 
 interface Request {
   email: string;
@@ -8,9 +14,9 @@ interface Request {
 }
 
 interface Response {
-  serializedUser: string;
+  serializedUser: SerializedUser;
   token: string;
-  refreshToken: string;
+  //refreshToken: string;
 }
 
 const AuthUserService = async ({
@@ -30,14 +36,13 @@ const AuthUserService = async ({
   }
 
   const token = createAccessToken(user)
-  const refreshToken = createRefreshToken(user)
+  //const refreshToken = createRefreshToken(user)
 
   const serializedUser = SerializeUser(user)
   
   return {
     serializedUser,
-    token,
-    refreshToken
+    token, 
   }
 }
 

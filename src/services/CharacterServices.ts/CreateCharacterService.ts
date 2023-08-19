@@ -1,5 +1,5 @@
-import * as Yup from 'yup'
 import Character from "../../models/Character";
+import * as Yup from 'yup'
 
 interface Request {
   image: string;
@@ -43,7 +43,7 @@ const CreateCharacterService = async({
   try {
     await schema.validate({ image, name, age, weight, history })
   } catch(err) {
-    throw new Error("Error validating schema")
+    throw new Error(`Error validating schema: ${err}`)
   }
 
   const character = await Character.create(

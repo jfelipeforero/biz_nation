@@ -1,8 +1,8 @@
-import {Model, Column, Table, BelongsToMany, Scopes, CreatedAt, UpdatedAt, PrimaryKey, AutoIncrement, BelongsTo} from "sequelize-typescript";
+import {Model, Column, Table, BelongsToMany, CreatedAt, UpdatedAt, PrimaryKey, AutoIncrement, BelongsTo} from "sequelize-typescript";
 import MovieShow from "./MovieShow";
 import CharacterMovieShow from "./CharacterMovieShow";
 
-@Table
+@Table({ paranoid: true })
 class Character extends Model {
   @PrimaryKey
   @AutoIncrement

@@ -14,9 +14,9 @@ export const register = async(req: Request, res: Response) => {
 export const login = async(req: Request, res: Response) => {
   console.log(req.body)
   const { email, password } = req.body
-  const { serializedUser, token, refreshToken} = await AuthUserService({ email, password })
+  const { serializedUser, token } = await AuthUserService({ email, password })
 
-  SendRefreshToken(res, refreshToken)
+  //SendRefreshToken(res, refreshToken)
 
   return res.status(StatusCodes.OK).json({
     user: serializedUser,

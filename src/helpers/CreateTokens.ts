@@ -14,13 +14,13 @@ export const createAccessToken = (user: User): string => {
   );
 };
 
-export const createRefreshToken = (user: User): string => {
-  const { refreshSecret, refreshExpiresIn } = authConfig;
+//export const createRefreshToken = (user: User): string => {
+  //const { refreshSecret, refreshExpiresIn } = authConfig;
 
-  return sign({ id: user.id, tokenVersion: user.tokenVersion }, refreshSecret, {
-    expiresIn: refreshExpiresIn
-  });
-};
+ // return sign({ id: user.id, tokenVersion: user.tokenVersion }, refreshSecret, {
+  //  expiresIn: refreshExpiresIn
+ // });
+//};
 
 
 
