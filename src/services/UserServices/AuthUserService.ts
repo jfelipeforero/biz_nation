@@ -1,6 +1,7 @@
 import { createAccessToken } from "../../helpers/CreateTokens";
 import { SerializeUser } from "../../helpers/SerializeUser";
 import User from "../../models/User";
+import * as Yup from 'yup'
 
 interface SerializedUser {
   id: number;
@@ -23,12 +24,29 @@ const AuthUserService = async ({
   email,
   password
 }:Request): Promise<Response> => {
-  const user = await User.findOne({
-    where: { email }
+  const schema = Yup.object().shape({
+    username: Yup.string().required().min(3),
+    email: Yup.string()
+      .email()
+      .required()
+      .test(
+        "Check-email",
+        "An user with this email already exists.",
+        async value => {
+          if (!value) return false;
+          const emailExists = await User.findOne({
+            where: { email: value }
+          });
+          return !emailExists;
+        }
+      ),
+      password: Yup.string().required().min(6)
   })
 
-  if (!user) {
-    throw new Error("There is no user with that email")
+  try {
+    await schema.validate({ email, username, password })
+  } catch(err) {
+    throw new Error
   }
 
   if (!(await user.checkPassword(password))) {

@@ -1,7 +1,7 @@
 import Character from "../../models/Character";
 import MovieShow from "../../models/MovieShow";
 
-const ShowCharacterService = async (id: string | number): Promise<Character> => {
+const GetByIdService = async (id: string | number): Promise<Character> => {
   const character = await Character.findByPk(id, {
     attributes: [ "image", "name", "age", "weight", "history" ],
     include: [
@@ -15,5 +15,5 @@ const ShowCharacterService = async (id: string | number): Promise<Character> => 
   return character;
 };
 
-export default ShowCharacterService;
+export default GetByIdService;
 

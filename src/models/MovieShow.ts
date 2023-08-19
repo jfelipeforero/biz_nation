@@ -1,6 +1,7 @@
-import {Model, Column, Table, BelongsToMany, Scopes, CreatedAt, UpdatedAt, PrimaryKey, AutoIncrement, BelongsTo} from "sequelize-typescript";
+import {Model, Column, Table, BelongsToMany, Scopes, CreatedAt, UpdatedAt, PrimaryKey, AutoIncrement, BelongsTo, ForeignKey} from "sequelize-typescript";
 import Character from "./Character";
 import CharacterMovieShow from "./CharacterMovieShow";
+import Genre from "./Genre";
 
 @Table
 class MovieShow extends Model {
@@ -23,6 +24,14 @@ class MovieShow extends Model {
 
   @BelongsToMany(() => Character, () => CharacterMovieShow) 
   characters!: Character[];
+
+  @ForeignKey(() => Genre)
+  @Column
+  genreId!: number;
+
+  @BelongsTo(() => Genre)
+  genre!: Genre;
+
 }
 
 export default MovieShow

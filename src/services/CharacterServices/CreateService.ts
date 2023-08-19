@@ -1,28 +1,23 @@
 import Character from "../../models/Character";
 import * as Yup from 'yup'
-import ShowCharacterService from "./ShowCharacterService";
 
-interface CharacterData {
-  image?: string;
-  name?: string;
-  age?: string;
-  weight?: string;
-  history?: string;
+interface Request {
+  image: string;
+  name: string;
+  age: number;
+  weight: string;
+  history: string;
   movieshowIds?: number[];
 }
 
-interface Request {
-  characterData: CharacterData;
-  characterId: string
-}
-
-const UpdateCharacterService = async({
-  characterId,
-  characterData
+const CreateService = async({
+  image,
+  name,
+  age,
+  weight,
+  history,
+  movieshowIds = []
 }: Request): Promise<Character> => {
-  const character = await ShowCharacterService(characterId)
-  console.log(character)
-
   const schema = Yup.object().shape({
     image: Yup.string().required().min(2), 
     name: Yup.string() 
@@ -40,28 +35,25 @@ const UpdateCharacterService = async({
         return !nameExists;
       }
     ),
-    age: Yup.number().required().integer().required().min(1),
+    age: Yup.number().required(),
     weight: Yup.number().required(), 
     history: Yup.string().required().min(10),
-    
   })
-
-  const { image, name, age, weight, history, movieshowIds = [] } = characterData;
-
   try {
     await schema.validate({ image, name, age, weight, history })
   } catch(err) {
     throw new Error(`Error validating schema: ${err}`)
   }
 
-  await character.update(
+  const character = await Character.create(
     { 
       image,
       name,
       age,
       weight,
       history 
-    }
+    },
+    { include: ["moviesshows"] }
   );
 
   await character.$set("moviesshows", movieshowIds)
@@ -71,4 +63,4 @@ const UpdateCharacterService = async({
   return character
 }
 
-export default UpdateCharacterService
+export default CreateService

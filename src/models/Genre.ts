@@ -1,4 +1,5 @@
-import {Model, Column, Table, CreatedAt, UpdatedAt, PrimaryKey, AutoIncrement} from "sequelize-typescript";
+import {Model, Column, Table, CreatedAt, UpdatedAt, PrimaryKey, AutoIncrement, HasMany} from "sequelize-typescript";
+import MovieShow from "./MovieShow";
 
 @Table
 class Genre extends Model {
@@ -15,6 +16,9 @@ class Genre extends Model {
 
   @Column
   movieshow!: string;
+
+  @HasMany(() => MovieShow)
+  moviesshows!: MovieShow[];
 }
 
 export default Genre;

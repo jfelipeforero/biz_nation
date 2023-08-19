@@ -1,8 +1,8 @@
-import {Model, Column, Table, BelongsToMany, CreatedAt, UpdatedAt, PrimaryKey, AutoIncrement, BelongsTo} from "sequelize-typescript";
+import {Model, Column, Table, BelongsToMany, CreatedAt, UpdatedAt, PrimaryKey, AutoIncrement, BelongsTo, DeletedAt, AllowNull} from "sequelize-typescript";
 import MovieShow from "./MovieShow";
 import CharacterMovieShow from "./CharacterMovieShow";
 
-@Table({ paranoid: true })
+@Table({ timestamps: true, paranoid: true })
 class Character extends Model {
   @PrimaryKey
   @AutoIncrement
@@ -16,7 +16,7 @@ class Character extends Model {
   name!: string;
 
   @Column
-  age!: Date;
+  age!: number;
 
   @Column
   weight!: string;
@@ -26,6 +26,9 @@ class Character extends Model {
 
   @BelongsToMany(() => MovieShow, () => CharacterMovieShow) 
   moviesshows!: MovieShow[];
+
+  @DeletedAt
+  deletedAt?: Date;
 }
 
 export default Character
